@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week4_Backstage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/product.css">
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="text-end mt-4">
+        <button class="btn btn-primary" @click="openModal('new')">
+          建立新的產品
+        </button>
+      </div>
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th width="100">
+              分類
+            </th>
+            <th width="100">
+              地區
+            </th>
+            <th width="180">產品名稱</th>
+            <th width="120">
+              原價
+            </th>
+            <th width="120">
+              售價
+            </th>
+            <th width="100">
+              是否啟用
+            </th>
+            <th width="120">
+              編輯
+            </th>
+            <th width="100">
+              照片
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(product,key) in products" :key="product.id" :class="{'table-success':product.is_enabled}">
+            <td>{{product.category}}</td>
+            <td>{{product.area}}</td>
+            <td>{{product.title}}</td>
+            <td class="text-end">{{product.origin_price}}</td>
+            <td class="text-end">{{product.price}}</td>
+            <td>
+              <span class="text-success" v-if="product.is_enabled">啟用</span>
+              <span v-else>未啟用</span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('edit',product)" :data-id="product.id">
+                  編輯
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" :data-id="product.id" @click="openModal('delete',product)">
+                  刪除
+                </button>
+            <td>
+              <img :src="product.imageUrl" alt="pic" class="img-fluid">
+            </td>
+    </div>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    <page-pagination :pages="pages" :render-data="renderData"></page-pagination>
+  </div>
+  <!-- Modal -->
+  <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <product-component :select-product="selectProduct" :clear-product="clearProduct" :is-new="isNew" :update-product="updateProduct"
+    :delete-img="deleteImg" :clear-img="clearImg"
+    @add-img="addImgBtn" :add-img="addImg" @add-new-img="addNewImg" @input-img="inputImgUrl" :new-img="newImg"
+    ></product-component>
+  </div>
+  <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel" aria-hidden="true">
+    <delete-component :clear-product="clearProduct" :select-product="selectProduct" :delete-product="deleteProduct"></delete-component>
+  </div>
+  <!-- Modal -->
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js'
+          integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=='
+          crossorigin='anonymous'></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+          integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+          integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+          crossorigin="anonymous"></script>
+          <script src="js/config.js"></script>
+          <script type="module" src="js/product.js"></script>
+
+</body>
+</html>
